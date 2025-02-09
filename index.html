@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Propuesta de San Valentín</title>
+    <style>
+        body {
+            background-image: url('Fondo1.jpg');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        .container {
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 5px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            transition: transform 0.3s, background 0.3s ease;
+        }
+
+        .container.step1 { background: rgba(255, 110, 199, 0.9); }
+        .container.step2 { background: rgba(235, 174, 183, 0.9); } 
+        .container.step3 { background: rgba(255, 182, 193, 0.9); } 
+        .container.step4 { background: rgb(231, 133, 173); } 
+        .container.step5 { background: rgba(237, 59, 94, 0.9); }
+        .container.step6 { background: rgba(220, 20, 60, 0.9); }  
+
+        .hidden {
+            display: none;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2), 0 8px 15px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(to top, #e6e6e6, #ffffff);
+        }
+        
+        .next-btn {
+            background: linear-gradient(to top, #ff9800, #ffc107);
+            color: white;
+        }
+        
+        .yes-btn {
+            background: linear-gradient(to top, #4caf50, #8bc34a);
+            color: white;
+        }
+        
+        .no-btn {
+            background: linear-gradient(to top, #f44336, #e57373);
+            color: white;
+        }
+        
+        .images-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .animated-image {
+            width: 45%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2), 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="step1">
+        <h2>HOLA MI AMOR</h2>
+        <p>Esta es mi propuesta formal</p>
+        <p>Para que seas mi San Valentín 💖</p>
+        <img src="Portada.gif" alt="Imagen de propuesta" width="100%">
+        <button class="next-btn" onclick="nextStep(2)">Siguiente</button>
+    </div>
+    
+    <div class="container hidden" id="step2">
+        <h2>¿Por qué tú?</h2>
+        <p>Porque eres mi noviecita linda, hermosa, tierna....</p>
+        <p>Eres especial, única y haces mis días mejores 😊</p>
+        <div class="images-container">
+            <img src="Foto1.jpg" alt="Imagen 1" class="animated-image">
+            <img src="Foto2.jpg" alt="Imagen 2" class="animated-image">
+            <img src="Foto3.jpg" alt="Imagen 3" class="animated-image">
+            <img src="Foto4.jpg" alt="Imagen 4" class="animated-image">
+        </div>
+        <button class="next-btn" onclick="nextStep(3)">Siguiente</button>
+    </div>
+    
+    <div class="container hidden" id="step3">
+        <h2>SEÑORITA TATIANA LOPEZ COY :)</h2>
+        <h2>¿ACEPTAS SER MI SAN VALENTIN? 💕</h2>
+        <img id="gifStep3" src="Feliz2.gif" alt="Propuesta de san valentin" width="100%">
+        <button class="yes-btn" onclick="accept()">Sí:)</button>
+        <button class="no-btn" onclick="reject(3)">No:(</button>
+    </div>
+    
+    <div class="container hidden" id="step4">
+        <h2>Sabía que dirías que sí 😍</h2>
+        <img id="gifStep4" src="Ultima.gif" alt="Propuesta de san valentin" width="100%">
+        <p>Dime la palabra clave: <b>"Sí, mi merengoncito"</b> 💌</p>
+        <p>A quien te pregunte, le dices "Ya tengo planes para</p>
+        <p>este 14 de febrero con mi noviecito, sorry :)"</p>
+    </div>
+    
+    <div class="container hidden" id="step5">
+        <h2>Oh... ¿Segura? 🥺</h2>
+        <p>Piénsalo otra vez... ¿De verdad quieres romper mi corazoncito? 💔</p>
+        <img id="gifStep5" src="Triste2.gif" alt="Triste" width="100%">
+        <button class="yes-btn" onclick="accept()">Mejor sí acepto :)</button>
+        <button class="no-btn" onclick="nextStep(6)">Sí, lo siento 😢</button>
+    </div>
+    
+    <div class="container hidden" id="step6">
+        <h2>Está bien, lo entiendo 💔</h2>
+        <img id="gifStep6" src="Triste8.gif" alt="Triste" width="100%">
+        <p>Aunque me duele, yo te seguiré queriendo...</p>
+    </div>
+    
+    <script>
+
+        let currentStep = 1;
+        let noClicks = 0;
+        let gifImages = ["Triste1.gif", "Triste2.gif", "Triste3.gif", "Triste4.gif", "Triste5.gif", "Triste6.gif", "Triste7.gif"]; // Array con los GIFs
+        let currentGifIndex = 0; // Índice para controlar qué GIF se muestra
+        
+        function changeBackground(step) {
+            let container = document.getElementById(`step${step}`); // Selecciona el contenedor correcto
+
+            if (step === 1 || step === 2 || step === 3) {
+                document.body.style.backgroundImage = "url('Fondo1.jpg')";
+            } else if (step === 4) {
+                document.body.style.backgroundImage = "url('Fondo2.jpg')";
+            } else if (step === 5 || step === 6) {
+                document.body.style.backgroundImage = "url('Fondo3.jpg')";
+            }
+
+            // Asegurar que todas las clases anteriores se eliminan
+            container.classList.remove('step1', 'step2', 'step3', 'step4', 'step5', 'step6');
+            container.classList.add(`step${step}`);
+        }
+
+
+        function nextStep(step) {
+            let currentElement = document.getElementById(`step${currentStep}`);
+            let nextElement = document.getElementById(`step${step}`);
+            if (currentElement && nextElement) {
+                currentElement.classList.add('hidden');
+                nextElement.classList.remove('hidden');
+                currentStep = step;
+                changeBackground(step); // Cambiar fondo
+            }
+        }
+    
+        function accept() {
+            nextStep(4);
+        }
+    
+        function reject(step) {
+            noClicks++;
+            let noBtn = document.querySelector('.no-btn');
+            let yesBtn = document.querySelector('.yes-btn');
+            let gifImage;
+    
+            // Cambiar GIF cíclicamente
+            if (step === 3) {
+                gifImage = document.getElementById('gifStep3');
+            } else if (step === 5) {
+                gifImage = document.getElementById('gifStep5');
+            }
+    
+            // Cambiar el GIF a la siguiente imagen en el ciclo
+            gifImage.src = gifImages[currentGifIndex];
+    
+            // Avanzar al siguiente GIF
+            currentGifIndex = (currentGifIndex + 1) % gifImages.length;
+    
+            // Cambiar la escala de los botones
+            if (noClicks < 15) {
+                noBtn.style.transform = `scale(${1 - noClicks * 0.05})`;
+                yesBtn.style.transform = `scale(${1 + noClicks * 0.05})`;
+            } else {
+                nextStep(5); // Si se llega a los 15 clics, ir al paso 5
+            }
+        }
+    
+        function finalReject() {
+            nextStep(6);
+        }
+
+        let gifStep4Images = ["Ultima.gif", "Feliz2.gif", "Feliz3.gif"]; // Lista de GIFs
+        let currentStep4GifIndex = 0;
+
+        function changeStep4Gif() {
+            let gifElement = document.getElementById("gifStep4");
+            if (gifElement) {
+                gifElement.src = gifStep4Images[currentStep4GifIndex];
+                currentStep4GifIndex = (currentStep4GifIndex + 1) % gifStep4Images.length; // Cambia cíclicamente
+            }
+        }
+
+        // Iniciar el cambio automático cuando se muestra step4
+        function startGifRotation() {
+            if (currentStep === 4) {
+                setInterval(changeStep4Gif, 2000);
+            }
+        }
+
+        // Llamar a la función cuando se llegue al paso 4
+        function nextStep(step) {
+            let currentElement = document.getElementById(`step${currentStep}`);
+            let nextElement = document.getElementById(`step${step}`);
+            if (currentElement && nextElement) {
+                currentElement.classList.add('hidden');
+                nextElement.classList.remove('hidden');
+                currentStep = step;
+                changeBackground(step);
+
+                if (step === 4) {
+                    startGifRotation(); // Activar cambio de GIF en step4
+                }
+            }
+        }
+
+
+    </script>
+</body>
+</html>
